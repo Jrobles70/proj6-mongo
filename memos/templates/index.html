@@ -36,17 +36,18 @@
   {% endif %}
 {% endwith %}
 
-<h1>Memos</h1>
+<h1>Memos</h1><button>Add New</button> <button>Select All</button> <button>Deselect All</button> <button>Delete Selected</button>
 
 {% if g.memos %}
     {% for memo in g.memos %}
   <div class="memo">
   <div class="row">
   <div class="col-md-2">
-    {{ memo.date | humanize }}
+    <input type="checkbox" name="checkbox" onclick="addToDel()"> {{ memo.date | humanize }} <br>
   </div>
   <div class="col-md-10">
     {{ memo.text }}
+    <br>
   </div>
   </div> <!-- row -->
   </div> <!-- memo -->
@@ -58,5 +59,48 @@
  
 
 </div> <!-- container -->
+<script type="text/javascript">
+var to_be_deleted = []
+
+function addToDel(){
+	// should add date and text to be sent to flask
+	var row = $(this).parents(".row");
+		var memo = $(this).parents(".memo");
+		var children = row.childNodes;
+		var date = children[1].innerText;
+		var text = children[3].innerText;
+		var addTo = [memo, date, text];
+	if(document.getElementById('checkbox').checked){
+		to_be_deleted.push(addTo);
+	}
+	else{
+		var index = to_be_deleted.indexOf(addTo);
+		to_be_deleted = to_be_deleted.splice(0,index).concat(to_be_deleted.splice(index + 1, to_be_deleted.length))
+	}
+}
+
+function deleteSelected(){
+	// sends list to flask to be deleted
+	$.getJSON(TIME_CALC_URL, { deleteList: to_be_deleted });
+	deleteMemo()
+	to_be_deleted = []
+}
+
+function addNew(){
+	// sends date and text to flask to be made into a new memo
+}
+
+function displayMemo(){
+	// displays new memos
+}
+
+function deleteMemo(){
+	// takes memos that user chooses to delete off the screen
+}
+
+function 
+
+
+</script>>
 </body>
 </html>

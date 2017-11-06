@@ -34,6 +34,9 @@ memos/credentials.ini:
 run:	env credentials
 	$(INVENV) cd memos; python3 flask_main.py
 
+trial:	env credentials
+	$(INVENV) cd memos; python3 db_trial.py
+
 
 
 ##

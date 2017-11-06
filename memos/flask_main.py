@@ -98,7 +98,11 @@ def page_not_found(error):
     return flask.render_template('page_not_found.html',
                                  badurl=request.base_url,
                                  linkback=url_for("index")), 404
+##################
+# Request Handlers
+##################
 
+@app.route("/")
 #################
 #
 # Functions used within the templates

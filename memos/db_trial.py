@@ -68,7 +68,7 @@ print("Inserted")
 
 print("Reading database")
 
-records = [ ] 
+records = [ ]
 for record in collection.find( { "type": "dated_memo" } ):
    records.append(
         { "type": record['type'],

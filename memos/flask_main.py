@@ -145,12 +145,14 @@ def humanize_arrow_date( date ):
     try:
         then = arrow.get(date).to('local')
         now = arrow.utcnow().to('local')
-        if then.date() == now.date():
+        if then.date() == arrow.get(arrow.now().isoformat()).date():
             human = "Today"
+        elif then.date() == arrow.get(arrow.now().isoformat()).shift(days=+1).date():
+            human = "Tomorrow"
+        elif then.date() == arrow.get(arrow.now().isoformat()).shift(days=-1).date():
+            human = "Yesterday"
         else: 
             human = then.humanize(now)
-            if human == "in a day":
-                human = "Tomorrow"
     except: 
         human = date
     return human
@@ -178,4 +180,4 @@ if __name__ == "__main__":
     app.logger.setLevel(logging.DEBUG)
     app.run(port=CONFIG.PORT,host="0.0.0.0")
 
-    
+

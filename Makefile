@@ -37,6 +37,14 @@ run:	env credentials
 trial:	env credentials
 	$(INVENV) cd memos; python3 db_trial.py
 
+##
+## Run test suite. 
+## Currently 'nose' takes care of this, but in future we 
+## might add test cases that can't be run under 'nose' 
+##
+test:	env
+	$(INVENV) nosetests
+
 
 
 ##

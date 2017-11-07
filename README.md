@@ -37,6 +37,10 @@ Once the server is running open a new terminal and run
 make run
 ```
 
+# Known Bugs
+I am making this last commit after the fact because I am not sure why my days are coming out wrong. I know this was mentioned
+on the project page but I could not get it working correctly so I added in a temporary fix that displays the correct day.
+The day displays now as yesterday so I shifted the days by 1.
 
 # Author
 * Justin Robles - Jrobles@uoregon.edu

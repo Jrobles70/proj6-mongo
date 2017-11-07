@@ -140,16 +140,21 @@ def humanize_arrow_date( date ):
     Date is internal UTC ISO format string.
     Output should be "today", "yesterday", "in 5 days", etc.
     Arrow will try to humanize down to the minute, so we
-    need to catch 'today' as a special case. 
+    need to catch 'today' as a special case.
+
+    UPDATE:
+    This commit was made after the deadline I was just trying to see why this was not working.
+    The date that is displayed is one day off so I hard coded in the values to try to fix that
+    temporarily.
     """
     try:
         then = arrow.get(date).to('local')
         now = arrow.utcnow().to('local')
-        if then.date() == arrow.get(arrow.now().isoformat()).date():
+        if then.date() == arrow.get(arrow.now().shift(days=-1).isoformat()).date():
             human = "Today"
-        elif then.date() == arrow.get(arrow.now().isoformat()).shift(days=+1).date():
+        elif then.date() == arrow.get(arrow.now().isoformat()).date():
             human = "Tomorrow"
-        elif then.date() == arrow.get(arrow.now().isoformat()).shift(days=-1).date():
+        elif then.date() == arrow.get(arrow.now().isoformat()).shift(days=-2).date():
             human = "Yesterday"
         else: 
             human = then.humanize(now)

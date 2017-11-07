@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>Memos</title>
+
+  <!-- 'viewport' is used by bootstrap to respond to device size -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Javascript:  JQuery from a content distribution network (CDN) -->
+  <script
+     src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+  </script>
+
+  <!-- Bootstrap includes javascript and css  (must follow jquery) -->
+  <link rel="stylesheet"
+   href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+   <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js">
+</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+   <link rel="stylesheet" href="/static/css/memos.css" />
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#datepicker" ).datepicker();
+  } );
+  </script>
+</head>
+<body>
+<h1> Add New </h1>
+<p>Date: <input type="text" id="datepicker"></p>
+<input type="text" id="memo"></input>
+<button onclick="submit()">Submit</button>
+
+<script type="text/javascript">
+  var SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+
+  function submit(){
+    // send info to flask to add to db
+    date = document.getElementById("datepicker").value
+    memo = document.getElementById("memo").value
+    $.getJSON(SCRIPT_ROOT + "/_add_Memo", { date: date, memo: memo }, 
+      function(data){
+
+      }
+      );
+    window.location.replace(SCRIPT_ROOT + '/');
+  }
+
+
+
+</script>
+ 
+ 
+</body>
+</html>

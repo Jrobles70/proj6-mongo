@@ -17,6 +17,7 @@ from flask import g
 from flask import render_template
 from flask import request
 from flask import url_for
+import json
 
 import json
 import logging
@@ -29,6 +30,7 @@ from dateutil import tz  # For interpreting local times
 
 # Mongo database
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 
 import config
 CONFIG = config.configuration()
@@ -80,16 +82,38 @@ def index():
       app.logger.debug("Memo: " + str(memo))
   return flask.render_template('index.html')
 
+@app.route("/entry")
+def entry():
+    app.logger.debug("Entry page entered")
+    return flask.render_template('entry.html')
+
+@app.route("/_add_Memo")
+def addMemo():
+    app.logger.debug("Got a JSON request");
+    date = request.args.get("date", type=str)
+    memo = request.args.get("memo", type=str)
+
+    record = {"type": "dated_memo",
+              "date": arrow.get(date, "MM/DD/YYYY").naive,
+              "text": memo
+              }
+
+    collection.insert(record)
+    return "added"
+
+
+@app.route("/_delete")
+def _delete():
+    app.logger.debug("Starting to delete")
+    post = request.args.get("delete", type=str)
+    collection.remove({"_id": ObjectId(post)})
+    return "Nothing"
+
+
 
 @app.route("/jstest")
 def jstest():
     return flask.render_template('jstest.html')
-
-# We don't have an interface for creating memos yet
-# @app.route("/create")
-# def create():
-#     app.logger.debug("Create")
-#     return flask.render_template('create.html')
 
 
 @app.errorhandler(404)
@@ -145,7 +169,6 @@ def get_memos():
     records = [ ]
     for record in collection.find( { "type": "dated_memo" } ):
         record['date'] = arrow.get(record['date']).isoformat()
-        del record['_id']
         records.append(record)
     return records 
 
